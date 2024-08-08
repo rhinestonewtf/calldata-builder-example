@@ -1,0 +1,18 @@
+# Dotenv file
+.env
+
+node_modules
+
+dist
+
+nohup.out
+
+.vscode
+
+public
+.vercel
+
+coverage/
+src/_cjs/
+src/_esm/
+src/_types/
