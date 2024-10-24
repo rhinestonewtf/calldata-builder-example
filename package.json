@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@rhinestone/module-sdk": "^0.1.25",
     "express": "^4.19.2",
     "viem": "^2.19.2"
   },

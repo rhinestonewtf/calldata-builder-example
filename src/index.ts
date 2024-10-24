@@ -1,31 +1,36 @@
+import {
+  getAutoSaveAction,
+  getExecuteScheduledOrderAction,
+} from "@rhinestone/module-sdk";
 import express, { Request, Response } from "express";
-import { encodeFunctionData } from "viem";
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
 
-app.post("/call-data-builder", (req: Request, res: Response) => {
-  // this should be the data from the event that triggered the execution of your automation
-  // You could do whatever logic needed to build the calldata
-  // and then return the encoded calldata
+app.post("/scheduled-orders", (req: Request, res: Response) => {
   const data = req.body;
 
-  const calldata = encodeFunctionData({
-    functionName: "setSomeState",
-    abi: [
-      {
-        type: "function",
-        name: "setSomeState",
-        inputs: [{ type: "uint256" }],
-      },
-    ],
-    args: [BigInt(data.someState)],
+  const executeScheduledOrderAction = getExecuteScheduledOrderAction({
+    jobId: data.static.jobId,
   });
 
   res.json({
-    calldata,
+    calldata: executeScheduledOrderAction.data,
+  });
+});
+
+app.post("/auto-savings", async (req: Request, res: Response) => {
+  const data = req.body;
+
+  const autoSaveAction = await getAutoSaveAction({
+    token: data.dynamic.token,
+    amountReceived: data.dynamic.amountReceived,
+  });
+
+  res.json({
+    calldata: autoSaveAction.data,
   });
 });
 
